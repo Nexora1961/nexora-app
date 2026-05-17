@@ -37,27 +37,23 @@ function LoginPage() {
             maximumFractionDigits: 4,
           })
         );
-      } catch (error) {
-        console.error("Error loading NEX balance:", error);
-        setNexBalance("Unable to load");
-      }
-    }
-
-    loadNexBalance();
-  }, [authenticated, user?.wallet?.address]);
+  const [nexBalance, setNexBalance] = useState("Loading...");
+const [rewardStatus, setRewardStatus] = useState("Checking...");
 
   async function handleRewardCheckIn() {
     if (!user?.wallet?.address) {
       alert("Please connect your wallet first.");
       return;
     }
-
-   const { data: existing } = await supabase
+const { data: existing } = await supabase
   .from("reward_checkins")
-  .select("id")
+  .select("status")
   .eq("wallet_address", user.wallet.address)
   .limit(1);
 
+if (existing && existing.length > 0) {
+  setRewardStatus(existing[0].status);
+}
 if (existing && existing.length > 0) {
   alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
   return;
