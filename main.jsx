@@ -1,9 +1,13 @@
+import { createClient } from "@supabase/supabase-js";
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
 
 const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
+const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
+const SUPABASE_KEY = "sb_publishable_MF11AGREWlKRo36W5v3AjA_dWobnP5c";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ERC20_ABI = [
   "function balanceOf(address owner) view returns (uint256)",
