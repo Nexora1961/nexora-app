@@ -19,6 +19,7 @@ const ERC20_ABI = [
 function LoginPage() {
   const { login, authenticated, user } = usePrivy();
   const [nexBalance, setNexBalance] = useState("Loading...");
+  const [rewardStatus, setRewardStatus] = useState("Checking...");
 
   useEffect(() => {
     async function loadNexBalance() {
@@ -37,40 +38,82 @@ function LoginPage() {
             maximumFractionDigits: 4,
           })
         );
-  const [nexBalance, setNexBalance] = useState("Loading...");
-const [rewardStatus, setRewardStatus] = useState("Checking...");
+      } catch (error) {
+        console.error("Error loading NEX balance:", error);
+        setNexBalance("Unable to load");
+      }
+    }
+
+    async function loadRewardStatus() {
+      try {
+        if (!authenticated || !user?.wallet?.address) return;
+
+        const { data, error } = await supabase
+          .from("reward_checkins")
+          .select("status")
+          .eq("wallet_address", user.wallet.address)
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (error) {
+          console.error("Error loading reward status:", error);
+          setRewardStatus("Not registered");
+          return;
+        }
+
+        if (data && data.length > 0) {
+          setRewardStatus(data[0].status);
+        } else {
+          setRewardStatus("Not registered");
+        }
+      } catch (error) {
+        console.error("Reward status error:", error);
+        setRewardStatus("Not registered");
+      }
+    }
+
+    loadNexBalance();
+    loadRewardStatus();
+  }, [authenticated, user?.wallet?.address]);
 
   async function handleRewardCheckIn() {
     if (!user?.wallet?.address) {
       alert("Please connect your wallet first.");
       return;
     }
-const { data: existing } = await supabase
-  .from("reward_checkins")
-  .select("status")
-  .eq("wallet_address", user.wallet.address)
-  .limit(1);
 
-if (existing && existing.length > 0) {
-  setRewardStatus(existing[0].status);
-}
-if (existing && existing.length > 0) {
-  alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
-  return;
-}
+    const { data: existing, error: existingError } = await supabase
+      .from("reward_checkins")
+      .select("status")
+      .eq("wallet_address", user.wallet.address)
+      .limit(1);
 
-const { error } = await supabase.from("reward_checkins").insert([
-  {
-    wallet_address: user.wallet.address,
-    status: "pending",
-  },
-]);
+    if (existingError) {
+      console.error("Supabase check error:", existingError);
+      alert("Error checking reward status. Please try again.");
+      return;
+    }
+
+    if (existing && existing.length > 0) {
+      setRewardStatus(existing[0].status);
+      alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
+      return;
+    }
+
+    const { error } = await supabase.from("reward_checkins").insert([
+      {
+        wallet_address: user.wallet.address,
+        status: "pending",
+      },
+    ]);
 
     if (error) {
       console.error("Supabase insert error:", error);
       alert("Error saving reward check-in. Please try again.");
       return;
     }
+
+    setRewardStatus("pending");
 
     alert(
       "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
@@ -140,7 +183,7 @@ const { error } = await supabase.from("reward_checkins").insert([
               border: "1px solid #8b5cf6",
               borderRadius: "18px",
               padding: "24px 40px",
-              marginBottom: "35px",
+              marginBottom: "25px",
               minWidth: "320px",
             }}
           >
@@ -149,6 +192,24 @@ const { error } = await supabase.from("reward_checkins").insert([
             </p>
             <h2 style={{ fontSize: "36px", margin: 0, color: "#8b5cf6" }}>
               {nexBalance} NEX
+            </h2>
+          </div>
+
+          <div
+            style={{
+              background: "#0f172a",
+              border: "1px solid #22c55e",
+              borderRadius: "18px",
+              padding: "18px 36px",
+              marginBottom: "25px",
+              minWidth: "320px",
+            }}
+          >
+            <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
+              Reward Status
+            </p>
+            <h2 style={{ margin: "8px 0 0 0", fontSize: "30px", color: "#22c55e" }}>
+              {rewardStatus}
             </h2>
           </div>
 
