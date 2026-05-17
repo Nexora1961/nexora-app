@@ -52,12 +52,23 @@ function LoginPage() {
       return;
     }
 
-    const { error } = await supabase.from("reward_checkins").insert([
-      {
-        wallet_address: user.wallet.address,
-        status: "pending",
-      },
-    ]);
+   const { data: existing } = await supabase
+  .from("reward_checkins")
+  .select("id")
+  .eq("wallet_address", user.wallet.address)
+  .limit(1);
+
+if (existing && existing.length > 0) {
+  alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
+  return;
+}
+
+const { error } = await supabase.from("reward_checkins").insert([
+  {
+    wallet_address: user.wallet.address,
+    status: "pending",
+  },
+]);
 
     if (error) {
       console.error("Supabase insert error:", error);
