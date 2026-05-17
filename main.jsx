@@ -62,7 +62,7 @@ function LoginPage() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <PrivyProvider
-    appId="cmp95s2uh00w40cjrma5b8k3"
+    appId="cmp95s2uh00w40cjrnma5b8k3"
     config={{
       loginMethods: ["wallet"],
       appearance: {
