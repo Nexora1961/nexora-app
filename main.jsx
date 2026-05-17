@@ -114,6 +114,7 @@ function LoginPage() {
     }
 
     setRewardStatus("pending");
+    const [holderTier, setHolderTier] = useState("Loading...");
 
     alert(
       "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
