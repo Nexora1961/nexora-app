@@ -23,6 +23,8 @@
     "@privy-io/react-auth": "latest",
 
     "ethers": "latest"
+    "ethers": "latest",
+"@supabase/supabase-js": "latest"
 
   },
 
