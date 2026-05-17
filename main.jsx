@@ -116,7 +116,7 @@ function LoginPage() {
 <div
   onClick={() =>
     alert(
-      "🎁 Nexora Rewards\n\nThe Nexora reward system is currently being prepared for early ecosystem members.\n\nStay connected. 💜"
+      "💜 Purple Wave Reward Check-In\n\nYour wallet has been registered for future Nexora holder rewards.\n\nStay connected for future updates and reward announcements. 🚀"
     )
   }
   style={{
@@ -132,11 +132,11 @@ function LoginPage() {
   }}
 >
   <h2 style={{ margin: "0 0 8px 0", fontSize: "30px" }}>
-    🎁 Claim Gift Box
+    💜 Purple Wave Reward Check-In
   </h2>
 
   <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
-    Coming soon for Nexora holders.
+    Register for future Nexora holder rewards.
   </p>
 </div>
           <div
