@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
+import { ethers } from "ethers";
+
+const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
+
+const ERC20_ABI = [
+  "function balanceOf(address owner) view returns (uint256)",
+  "function decimals() view returns (uint8)",
+  "function symbol() view returns (string)"
+];
 
 function LoginPage() {
   const { login, authenticated, user } = usePrivy();
+  const [nexBalance, setNexBalance] = useState("Loading...");
+
+  useEffect(() => {
+    async function loadNexBalance() {
+      try {
+        if (!authenticated || !user?.wallet?.address || !window.ethereum) return;
+
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const token = new ethers.Contract(NEX_TOKEN_ADDRESS, ERC20_ABI, provider);
+
+        const decimals = await token.decimals();
+        const rawBalance = await token.balanceOf(user.wallet.address);
+        const formatted = ethers.formatUnits(rawBalance, decimals);
+
+        setNexBalance(Number(formatted).toLocaleString(undefined, {
+          maximumFractionDigits: 4
+        }));
+      } catch (error) {
+        console.error("Error loading NEX balance:", error);
+        setNexBalance("Unable to load");
+      }
+    }
+
+    loadNexBalance();
+  }, [authenticated, user?.wallet?.address]);
 
   return (
     <div
@@ -16,13 +50,15 @@ function LoginPage() {
         justifyContent: "center",
         alignItems: "center",
         fontFamily: "Arial",
+        textAlign: "center",
+        padding: "40px"
       }}
     >
       <h1
         style={{
           color: "#8b5cf6",
           fontSize: "70px",
-          marginBottom: "20px",
+          marginBottom: "20px"
         }}
       >
         Nexora Wallet Login
@@ -44,7 +80,7 @@ function LoginPage() {
               borderRadius: "16px",
               fontSize: "28px",
               cursor: "pointer",
-              fontWeight: "bold",
+              fontWeight: "bold"
             }}
           >
             Connect Wallet
@@ -56,22 +92,34 @@ function LoginPage() {
             Wallet Connected ✅
           </h2>
 
-          <p
-            style={{
-              fontSize: "20px",
-              marginBottom: "40px",
-              color: "#cfcfcf",
-            }}
-          >
+          <p style={{ fontSize: "20px", marginBottom: "25px", color: "#cfcfcf" }}>
             {user?.wallet?.address}
           </p>
+
+          <div
+            style={{
+              background: "#111827",
+              border: "1px solid #8b5cf6",
+              borderRadius: "18px",
+              padding: "24px 40px",
+              marginBottom: "35px",
+              minWidth: "320px"
+            }}
+          >
+            <p style={{ color: "#cfcfcf", marginBottom: "8px" }}>
+              Live NEX Balance
+            </p>
+            <h2 style={{ fontSize: "36px", margin: 0, color: "#8b5cf6" }}>
+              {nexBalance} NEX
+            </h2>
+          </div>
 
           <div
             style={{
               display: "flex",
               gap: "20px",
               flexWrap: "wrap",
-              justifyContent: "center",
+              justifyContent: "center"
             }}
           >
             <a
@@ -82,7 +130,7 @@ function LoginPage() {
                 padding: "16px 30px",
                 borderRadius: "14px",
                 textDecoration: "none",
-                fontWeight: "bold",
+                fontWeight: "bold"
               }}
             >
               Open Staking
@@ -97,7 +145,7 @@ function LoginPage() {
                 borderRadius: "14px",
                 textDecoration: "none",
                 fontWeight: "bold",
-                border: "1px solid #8b5cf6",
+                border: "1px solid #8b5cf6"
               }}
             >
               Buy NEX
@@ -116,8 +164,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       loginMethods: ["wallet"],
       appearance: {
         theme: "dark",
-        accentColor: "#8b5cf6",
-      },
+        accentColor: "#8b5cf6"
+      }
     }}
   >
     <LoginPage />
