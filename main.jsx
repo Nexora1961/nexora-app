@@ -118,10 +118,39 @@ function LoginPage() {
             </h2>
           </div>
 <div
-  onClick={() =>
+onClick={async () => {
+  if (!user?.wallet?.address) return;
+
+ if (error) {
+  alert("Error saving reward check-in.");
+  console.error(error);
+} else {
+  alert(
+    "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
+  );
+}
+}}
+if (error) {
+  alert("Error saving reward check-in.");
+  console.error(error);
+} else {
+  alert(
+    "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
+  );
+}
+}}
+      }
+    ]);
+
+  if (error) {
+    alert("Error saving reward check-in.");
+    console.error(error);
+  } else {
     alert(
-      "💜 Purple Wave Reward Check-In\n\nYour wallet has been registered for future Nexora holder rewards.\n\nStay connected for future updates and reward announcements. 🚀"
-    )
+      "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
+    );
+  }
+}}
   }
   style={{
     background: "linear-gradient(135deg, #1f1137, #111827)",
