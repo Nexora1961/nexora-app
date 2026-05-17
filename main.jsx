@@ -113,7 +113,24 @@ function LoginPage() {
               {nexBalance} NEX
             </h2>
           </div>
-
+<div
+  style={{
+    background: "linear-gradient(135deg, #1f1137, #111827)",
+    border: "1px solid #8b5cf6",
+    borderRadius: "18px",
+    padding: "22px 36px",
+    marginBottom: "30px",
+    minWidth: "320px",
+    boxShadow: "0 0 25px rgba(139, 92, 246, 0.25)",
+  }}
+>
+  <h2 style={{ margin: "0 0 8px 0", fontSize: "30px" }}>
+    🎁 Claim Gift Box
+  </h2>
+  <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
+    Coming soon for Nexora holders.
+  </p>
+</div>
           <div
             style={{
               display: "flex",
