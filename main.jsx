@@ -114,6 +114,11 @@ function LoginPage() {
             </h2>
           </div>
 <div
+  onClick={() =>
+    alert(
+      "🎁 Nexora Rewards\n\nThe Nexora reward system is currently being prepared for early ecosystem members.\n\nStay connected. 💜"
+    )
+  }
   style={{
     background: "linear-gradient(135deg, #1f1137, #111827)",
     border: "1px solid #8b5cf6",
@@ -122,11 +127,14 @@ function LoginPage() {
     marginBottom: "30px",
     minWidth: "320px",
     boxShadow: "0 0 25px rgba(139, 92, 246, 0.25)",
+    cursor: "pointer",
+    transition: "0.3s",
   }}
 >
   <h2 style={{ margin: "0 0 8px 0", fontSize: "30px" }}>
     🎁 Claim Gift Box
   </h2>
+
   <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
     Coming soon for Nexora holders.
   </p>
