@@ -52,8 +52,57 @@ function LoginPage() {
         </>
       ) : (
         <>
-          <h2>Wallet Connected ✅</h2>
-          <p>{user?.wallet?.address}</p>
+          <h2 style={{ fontSize: "42px", marginBottom: "20px" }}>
+            Wallet Connected ✅
+          </h2>
+
+          <p
+            style={{
+              fontSize: "20px",
+              marginBottom: "40px",
+              color: "#cfcfcf",
+            }}
+          >
+            {user?.wallet?.address}
+          </p>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <a
+              href="https://staking.nexoracrypto.com"
+              style={{
+                background: "#8b5cf6",
+                color: "white",
+                padding: "16px 30px",
+                borderRadius: "14px",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Open Staking
+            </a>
+
+            <a
+              href="https://www.bitmart.com/trade/en-US?symbol=NEX_USDT"
+              style={{
+                background: "#111827",
+                color: "white",
+                padding: "16px 30px",
+                borderRadius: "14px",
+                textDecoration: "none",
+                fontWeight: "bold",
+                border: "1px solid #8b5cf6",
+              }}
+            >
+              Buy NEX
+            </a>
+          </div>
         </>
       )}
     </div>
