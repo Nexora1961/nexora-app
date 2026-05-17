@@ -8,6 +8,7 @@ const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
 
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MF11AGREWlKRo36W5v3AjA_dWobnP5c";
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ERC20_ABI = [
@@ -18,62 +19,65 @@ const ERC20_ABI = [
 
 function LoginPage() {
   const { login, authenticated, user } = usePrivy();
+
   const [nexBalance, setNexBalance] = useState("Loading...");
   const [rewardStatus, setRewardStatus] = useState("Checking...");
+  const [holderTier, setHolderTier] = useState("Loading...");
 
   useEffect(() => {
-    async function loadNexBalance() {
+    async function loadData() {
       try {
-        if (!authenticated || !user?.wallet?.address || !window.ethereum) return;
+        if (!authenticated || !user?.wallet?.address || !window.ethereum) {
+          return;
+        }
 
         const provider = new ethers.BrowserProvider(window.ethereum);
-        const token = new ethers.Contract(NEX_TOKEN_ADDRESS, ERC20_ABI, provider);
+
+        const token = new ethers.Contract(
+          NEX_TOKEN_ADDRESS,
+          ERC20_ABI,
+          provider
+        );
 
         const decimals = await token.decimals();
+
         const rawBalance = await token.balanceOf(user.wallet.address);
+
         const formatted = ethers.formatUnits(rawBalance, decimals);
 
+        const balanceNumber = Number(formatted);
+
+        if (balanceNumber >= 5000) {
+          setHolderTier("🔥 Core Holder");
+        } else if (balanceNumber >= 500) {
+          setHolderTier("💜 Wave Holder");
+        } else {
+          setHolderTier("Starter");
+        }
+
         setNexBalance(
-          Number(formatted).toLocaleString(undefined, {
+          balanceNumber.toLocaleString(undefined, {
             maximumFractionDigits: 4,
           })
         );
-      } catch (error) {
-        console.error("Error loading NEX balance:", error);
-        setNexBalance("Unable to load");
-      }
-    }
 
-    async function loadRewardStatus() {
-      try {
-        if (!authenticated || !user?.wallet?.address) return;
-
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("reward_checkins")
           .select("status")
           .eq("wallet_address", user.wallet.address)
-          .order("created_at", { ascending: false })
           .limit(1);
-
-        if (error) {
-          console.error("Error loading reward status:", error);
-          setRewardStatus("Not registered");
-          return;
-        }
 
         if (data && data.length > 0) {
           setRewardStatus(data[0].status);
         } else {
-          setRewardStatus("Not registered");
+          setRewardStatus("Not Registered");
         }
       } catch (error) {
-        console.error("Reward status error:", error);
-        setRewardStatus("Not registered");
+        console.error(error);
       }
     }
 
-    loadNexBalance();
-    loadRewardStatus();
+    loadData();
   }, [authenticated, user?.wallet?.address]);
 
   async function handleRewardCheckIn() {
@@ -82,21 +86,19 @@ function LoginPage() {
       return;
     }
 
-    const { data: existing, error: existingError } = await supabase
+    const { data: existing } = await supabase
       .from("reward_checkins")
       .select("status")
       .eq("wallet_address", user.wallet.address)
       .limit(1);
 
-    if (existingError) {
-      console.error("Supabase check error:", existingError);
-      alert("Error checking reward status. Please try again.");
-      return;
-    }
-
     if (existing && existing.length > 0) {
       setRewardStatus(existing[0].status);
-      alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
+
+      alert(
+        "💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅"
+      );
+
       return;
     }
 
@@ -108,13 +110,14 @@ function LoginPage() {
     ]);
 
     if (error) {
-      console.error("Supabase insert error:", error);
-      alert("Error saving reward check-in. Please try again.");
+      console.error(error);
+
+      alert("Error saving reward check-in.");
+
       return;
     }
 
     setRewardStatus("pending");
-    const [holderTier, setHolderTier] = useState("Loading...");
 
     alert(
       "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
@@ -174,7 +177,13 @@ function LoginPage() {
             Wallet Connected ✅
           </h2>
 
-          <p style={{ fontSize: "20px", marginBottom: "25px", color: "#cfcfcf" }}>
+          <p
+            style={{
+              fontSize: "20px",
+              marginBottom: "25px",
+              color: "#cfcfcf",
+            }}
+          >
             {user?.wallet?.address}
           </p>
 
@@ -191,7 +200,14 @@ function LoginPage() {
             <p style={{ color: "#cfcfcf", marginBottom: "8px" }}>
               Live NEX Balance
             </p>
-            <h2 style={{ fontSize: "36px", margin: 0, color: "#8b5cf6" }}>
+
+            <h2
+              style={{
+                fontSize: "36px",
+                margin: 0,
+                color: "#8b5cf6",
+              }}
+            >
               {nexBalance} NEX
             </h2>
           </div>
@@ -209,8 +225,40 @@ function LoginPage() {
             <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
               Reward Status
             </p>
-            <h2 style={{ margin: "8px 0 0 0", fontSize: "30px", color: "#22c55e" }}>
+
+            <h2
+              style={{
+                margin: "8px 0 0 0",
+                fontSize: "30px",
+                color: "#22c55e",
+              }}
+            >
               {rewardStatus}
+            </h2>
+          </div>
+
+          <div
+            style={{
+              background: "#111827",
+              border: "1px solid #8b5cf6",
+              borderRadius: "18px",
+              padding: "18px 36px",
+              marginBottom: "25px",
+              minWidth: "320px",
+            }}
+          >
+            <p style={{ margin: 0, color: "#cfcfcf", fontSize: "18px" }}>
+              Holder Tier
+            </p>
+
+            <h2
+              style={{
+                margin: "8px 0 0 0",
+                fontSize: "30px",
+                color: "#8b5cf6",
+              }}
+            >
+              {holderTier}
             </h2>
           </div>
 
@@ -225,7 +273,6 @@ function LoginPage() {
               minWidth: "320px",
               boxShadow: "0 0 25px rgba(139, 92, 246, 0.25)",
               cursor: "pointer",
-              transition: "0.3s",
             }}
           >
             <h2 style={{ margin: "0 0 8px 0", fontSize: "30px" }}>
