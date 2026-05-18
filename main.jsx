@@ -161,22 +161,17 @@ function LoginPage() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
+            <img
+              src="/nexora-logo.png"
+              alt="Nexora Logo"
               style={{
-                width: "58px",
-                height: "58px",
+                width: "72px",
+                height: "72px",
                 borderRadius: "18px",
-                background: "linear-gradient(135deg, #8b5cf6, #3b0764)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "30px",
-                fontWeight: "bold",
+                objectFit: "contain",
                 boxShadow: "0 0 28px rgba(139,92,246,0.45)",
               }}
-            >
-              N
-            </div>
+            />
 
             <div>
               <h1
@@ -572,4 +567,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <LoginPage />
   </PrivyProvider>
 );
+
 
