@@ -20,11 +20,14 @@ function shortWallet(address) {
 }
 
 function Card({ children, border = "#8b5cf6", glow = false, onClick }) {
-  const handleRegister = async () => {
+const handleRegister = async () => {
   if (!account) {
     alert("Connect wallet first");
     return;
   }
+
+  alert("Wallet registered for rewards.");
+};
 
   const { data: existing } = await supabase
     .from("reward_checkins")
