@@ -61,6 +61,7 @@ const handleRegister = async () => {
     alert("Registration failed");
   }
 };
+function Card({ children, border = "#8b5cf6", glow = false, onClick }) {
   return (
     <div
       onClick={onClick}
