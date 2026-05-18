@@ -46,6 +46,7 @@ function LoginPage() {
   const [balanceNumber, setBalanceNumber] = useState(0);
 
   const walletAddress = user?.wallet?.address;
+
   const isAdmin =
     walletAddress?.toLowerCase() ===
     "0x3645a56ad01642c2ee7fa8ab301cea09f107e2f2";
@@ -91,7 +92,10 @@ function LoginPage() {
           setRewardStatus("Not Registered");
         }
       } catch (error) {
-        console.error(error);
+        console.error("Load data error:", error);
+        setNexBalance("Error");
+        setRewardStatus("Error");
+        setHolderTier("Error");
       }
     }
 
@@ -104,35 +108,40 @@ function LoginPage() {
       return;
     }
 
-    const { data: existing } = await supabase
-      .from("reward_checkins")
-      .select("status")
-      .eq("wallet_address", walletAddress)
-      .limit(1);
+    try {
+      const { data: existing } = await supabase
+        .from("reward_checkins")
+        .select("status")
+        .eq("wallet_address", walletAddress)
+        .limit(1);
 
-    if (existing && existing.length > 0) {
-      setRewardStatus(existing[0].status);
-      alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
-      return;
+      if (existing && existing.length > 0) {
+        setRewardStatus(existing[0].status);
+        alert("💜 Purple Wave Reward Check-In\n\nYou are already registered. ✅");
+        return;
+      }
+
+      const { error } = await supabase.from("reward_checkins").insert([
+        {
+          wallet_address: walletAddress,
+          status: "pending",
+        },
+      ]);
+
+      if (error) {
+        console.error("Supabase insert error:", error);
+        alert("Error saving reward check-in.");
+        return;
+      }
+
+      setRewardStatus("pending");
+      alert(
+        "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
+      );
+    } catch (error) {
+      console.error("Reward check-in error:", error);
+      alert("Registration failed. Please try again.");
     }
-
-    const { error } = await supabase.from("reward_checkins").insert([
-      {
-        wallet_address: walletAddress,
-        status: "pending",
-      },
-    ]);
-
-    if (error) {
-      console.error(error);
-      alert("Error saving reward check-in.");
-      return;
-    }
-
-    setRewardStatus("pending");
-    alert(
-      "💜 Purple Wave Reward Check-In\n\nYour wallet has been successfully registered for future Nexora holder rewards. 🚀"
-    );
   }
 
   const waveProgress = Math.min((balanceNumber / 500) * 100, 100);
@@ -179,14 +188,7 @@ function LoginPage() {
             </div>
 
             <div>
-              <h1
-                style={{
-                  margin: 0,
-                  fontSize: "34px",
-                  color: "#8b5cf6",
-                  letterSpacing: "1px",
-                }}
-              >
+              <h1 style={{ margin: 0, fontSize: "34px", color: "#8b5cf6" }}>
                 NEXORA
               </h1>
               <p style={{ margin: "5px 0 0", color: "#cfcfcf" }}>
@@ -195,7 +197,7 @@ function LoginPage() {
             </div>
           </div>
 
-          {authenticated ? (
+          {authenticated && (
             <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
               <span
                 style={{
@@ -224,7 +226,7 @@ function LoginPage() {
                 Disconnect
               </button>
             </div>
-          ) : null}
+          )}
         </header>
 
         {!authenticated ? (
@@ -237,30 +239,21 @@ function LoginPage() {
               textAlign: "center",
             }}
           >
-            <div
-              style={{
-                background: "rgba(17, 24, 39, 0.9)",
-                border: "1px solid #8b5cf6",
-                borderRadius: "32px",
-                padding: "54px",
-                maxWidth: "720px",
-                boxShadow: "0 0 60px rgba(139,92,246,0.25)",
-              }}
-            >
-              <h2 style={{ fontSize: "56px", margin: "0 0 18px" }}>
+            <Card glow>
+              <h2 style={{ fontSize: "48px", margin: "0 0 18px" }}>
                 Nexora Wallet Login
               </h2>
 
               <p
                 style={{
                   color: "#cfcfcf",
-                  fontSize: "22px",
+                  fontSize: "20px",
                   lineHeight: 1.55,
                   marginBottom: "36px",
                 }}
               >
-                Connect your wallet to access live NEX balance tracking,
-                holder tiers, reward registration, and ecosystem tools.
+                Connect your wallet to access live NEX balance tracking, holder
+                tiers, reward registration, and ecosystem tools.
               </p>
 
               <button
@@ -279,37 +272,26 @@ function LoginPage() {
               >
                 Connect Wallet
               </button>
-            </div>
+            </Card>
           </section>
         ) : (
           <>
             <section
               style={{
                 display: "grid",
-                gridTemplateColumns: "1.2fr 0.8fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                 gap: "24px",
                 marginBottom: "24px",
               }}
             >
               <Card glow>
-                <p style={{ margin: 0, color: "#cfcfcf" }}>Wallet Connected ✅</p>
-                <h2
-                  style={{
-                    margin: "14px 0",
-                    fontSize: "44px",
-                    color: "#8b5cf6",
-                  }}
-                >
+                <p style={{ margin: 0, color: "#cfcfcf" }}>
+                  Wallet Connected ✅
+                </p>
+                <h2 style={{ margin: "14px 0", fontSize: "38px", color: "#8b5cf6" }}>
                   Nexora Dashboard
                 </h2>
-                <p
-                  style={{
-                    margin: 0,
-                    color: "#cfcfcf",
-                    wordBreak: "break-all",
-                    fontSize: "16px",
-                  }}
-                >
+                <p style={{ margin: 0, color: "#cfcfcf", wordBreak: "break-all" }}>
                   {walletAddress}
                 </p>
               </Card>
@@ -320,7 +302,7 @@ function LoginPage() {
                   style={{
                     margin: "16px 0 0",
                     color: "#22c55e",
-                    fontSize: "42px",
+                    fontSize: "36px",
                     textTransform: "capitalize",
                   }}
                 >
@@ -332,69 +314,40 @@ function LoginPage() {
             <section
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
                 gap: "24px",
                 marginBottom: "24px",
               }}
             >
               <Card>
                 <p style={{ color: "#cfcfcf", margin: 0 }}>Live NEX Balance</p>
-                <h2
-                  style={{
-                    color: "#8b5cf6",
-                    fontSize: "34px",
-                    margin: "14px 0 0",
-                  }}
-                >
+                <h2 style={{ color: "#8b5cf6", fontSize: "34px", margin: "14px 0 0" }}>
                   {nexBalance} NEX
                 </h2>
               </Card>
 
-              <Card
-                onClick={() =>
-                  alert(
-                    `${holderTier}\n\nWave Holder: 500+ NEX\nCore Holder: 5,000+ NEX\n\nFuture reward eligibility may require long-term holding and admin approval.`
-                  )
-                }
-              >
+              <Card>
                 <p style={{ color: "#cfcfcf", margin: 0 }}>Holder Tier</p>
-                <h2
-                  style={{
-                    color: "#8b5cf6",
-                    fontSize: "34px",
-                    margin: "14px 0 0",
-                  }}
-                >
+                <h2 style={{ color: "#8b5cf6", fontSize: "34px", margin: "14px 0 0" }}>
                   {holderTier}
                 </h2>
               </Card>
 
               <Card onClick={handleRewardCheckIn} glow>
                 <p style={{ color: "#cfcfcf", margin: 0 }}>Rewards</p>
-                <h2
-                  style={{
-                    color: "white",
-                    fontSize: "30px",
-                    margin: "14px 0 8px",
-                  }}
-                >
-                  💜 Check-In
+                <h2 style={{ color: "white", fontSize: "30px", margin: "14px 0 8px" }}>
+                  💜 Register Wallet
                 </h2>
                 <p style={{ color: "#cfcfcf", margin: 0 }}>
                   Register for future holder rewards.
                 </p>
               </Card>
             </section>
-<button
-  onClick={handleRegister}
-  className="px-4 py-2 rounded-lg bg-purple-600 text-white mt-4"
->
-  Register Wallet for Rewards
-</button>
+
             <section
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
                 gap: "24px",
                 marginBottom: "24px",
               }}
@@ -402,160 +355,42 @@ function LoginPage() {
               <Card>
                 <h2 style={{ marginTop: 0 }}>💜 Wave Holder Progress</h2>
                 <p style={{ color: "#cfcfcf" }}>500+ NEX holder tier</p>
-                <div
-                  style={{
-                    height: "12px",
-                    background: "#1f2937",
-                    borderRadius: "999px",
-                    overflow: "hidden",
-                  }}
-                >
+                <div style={{ height: "12px", background: "#1f2937", borderRadius: "999px" }}>
                   <div
                     style={{
                       width: `${waveProgress}%`,
                       height: "100%",
                       background: "#8b5cf6",
+                      borderRadius: "999px",
                     }}
                   />
                 </div>
-                <p style={{ color: "#cfcfcf" }}>
-                  {Math.min(balanceNumber, 500).toLocaleString()} / 500 NEX
-                </p>
               </Card>
 
               <Card>
                 <h2 style={{ marginTop: 0 }}>🔥 Core Holder Progress</h2>
                 <p style={{ color: "#cfcfcf" }}>5,000+ NEX holder tier</p>
-                <div
-                  style={{
-                    height: "12px",
-                    background: "#1f2937",
-                    borderRadius: "999px",
-                    overflow: "hidden",
-                  }}
-                >
+                <div style={{ height: "12px", background: "#1f2937", borderRadius: "999px" }}>
                   <div
                     style={{
                       width: `${coreProgress}%`,
                       height: "100%",
                       background: "#8b5cf6",
+                      borderRadius: "999px",
                     }}
                   />
                 </div>
-                <p style={{ color: "#cfcfcf" }}>
-                  {Math.min(balanceNumber, 5000).toLocaleString()} / 5,000 NEX
-                </p>
               </Card>
             </section>
 
-            <section
-              style={{
-                background: "rgba(17, 24, 39, 0.9)",
-                border: "1px solid rgba(139,92,246,0.8)",
-                borderRadius: "28px",
-                padding: "34px",
-                marginBottom: "24px",
-              }}
-            >
-              <h2 style={{ marginTop: 0 }}>Purple Wave Holder Program</h2>
-              <p style={{ color: "#cfcfcf", lineHeight: 1.6 }}>
-                Holder tiers are based on live NEX balance in the connected
-                wallet. Future rewards may require long-term holding and manual
-                approval.
-              </p>
-
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: "18px",
-                  marginTop: "22px",
-                }}
-              >
-                <div
-                  style={{
-                    border: "1px solid rgba(139,92,246,0.7)",
-                    borderRadius: "18px",
-                    padding: "20px",
-                  }}
-                >
-                  <h3 style={{ marginTop: 0 }}>💜 Wave Holder</h3>
-                  <p style={{ color: "#cfcfcf", marginBottom: 0 }}>
-                    500+ NEX holder tier. Future reward target: 100 NEX.
-                  </p>
-                </div>
-
-                <div
-                  style={{
-                    border: "1px solid rgba(139,92,246,0.7)",
-                    borderRadius: "18px",
-                    padding: "20px",
-                  }}
-                >
-                  <h3 style={{ marginTop: 0 }}>🔥 Core Holder</h3>
-                  <p style={{ color: "#cfcfcf", marginBottom: 0 }}>
-                    5,000+ NEX holder tier. Future reward target: 500 NEX.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {isAdmin ? (
-              <section
-                style={{
-                  background: "linear-gradient(135deg, #111827, #1f1137)",
-                  border: "1px solid #facc15",
-                  borderRadius: "28px",
-                  padding: "28px",
-                  marginBottom: "24px",
-                }}
-              >
+            {isAdmin && (
+              <Card border="#facc15">
                 <h2 style={{ marginTop: 0 }}>🛡️ Admin Access</h2>
                 <p style={{ color: "#cfcfcf" }}>
-                  Admin wallet detected. Approval and reward management tools
-                  will be added here next.
+                  Admin wallet detected. Approval and reward management tools will be added here next.
                 </p>
-              </section>
-            ) : null}
-
-            <div
-              style={{
-                display: "flex",
-                gap: "18px",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              <a
-                href="https://staking.nexoracrypto.com"
-                style={{
-                  background: "#8b5cf6",
-                  color: "white",
-                  padding: "16px 30px",
-                  borderRadius: "14px",
-                  textDecoration: "none",
-                  fontWeight: "bold",
-                  boxShadow: "0 0 22px rgba(139,92,246,0.35)",
-                }}
-              >
-                Open Staking
-              </a>
-
-              <a
-                href="https://www.bitmart.com/trade/en-US?symbol=NEX_USDT"
-                style={{
-                  background: "#111827",
-                  color: "white",
-                  padding: "16px 30px",
-                  borderRadius: "14px",
-                  textDecoration: "none",
-                  fontWeight: "bold",
-                  border: "1px solid #8b5cf6",
-                }}
-              >
-                Buy NEX
-              </a>
-            </div>
+              </Card>
+            )}
           </>
         )}
       </div>
