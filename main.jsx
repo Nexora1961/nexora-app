@@ -45,7 +45,6 @@ const handleRegister = async () => {
 };
 
   alert("Wallet registered for rewards.");
-};
 
   const { data: existing } = await supabase
     .from("reward_checkins")
