@@ -162,8 +162,6 @@ function LoginPage() {
         >
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <img
-             
-              alt="Nexora Logo"
               style={{
                 width: "72px",
                 height: "72px",
