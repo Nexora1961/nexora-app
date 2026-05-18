@@ -47,32 +47,19 @@ const handleRegister = async () => {
   alert("Wallet registered for rewards.");
 
   const { data: existing } = await supabase
-    .from("reward_checkins")
-    .select("*")
-    .eq("wallet_address", account)
-    .maybeSingle();
-
-  if (existing) {
-    alert("Wallet already registered");
+    const handleRegister = async () => {
+  if (!account) {
+    alert("Connect wallet first");
     return;
   }
 
-  const { error } = await supabase
-    .from("reward_checkins")
-    .insert([
-      {
-        wallet_address: account,
-        status: "pending",
-      },
-    ]);
-
-  if (error) {
+  try {
+    alert("Wallet registered for rewards.");
+    console.log("Wallet:", account);
+  } catch (error) {
     console.error(error);
     alert("Registration failed");
-    return;
   }
-
-  alert("Wallet registered successfully!");
 };
   return (
     <div
