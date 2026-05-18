@@ -26,6 +26,24 @@ const handleRegister = async () => {
     return;
   }
 
+  try {
+    alert("Wallet registered for rewards.");
+    console.log("Wallet:", account);
+  } catch (error) {
+    console.error(error);
+    alert("Registration failed");
+  }
+};
+
+  try {
+    alert("Wallet registered for rewards.");
+    console.log("Wallet:", account);
+  } catch (error) {
+    console.error(error);
+    alert("Registration failed");
+  }
+};
+
   alert("Wallet registered for rewards.");
 };
 
