@@ -20,6 +20,40 @@ function shortWallet(address) {
 }
 
 function Card({ children, border = "#8b5cf6", glow = false, onClick }) {
+  const handleRegister = async () => {
+  if (!account) {
+    alert("Connect wallet first");
+    return;
+  }
+
+  const { data: existing } = await supabase
+    .from("reward_checkins")
+    .select("*")
+    .eq("wallet_address", account)
+    .maybeSingle();
+
+  if (existing) {
+    alert("Wallet already registered");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("reward_checkins")
+    .insert([
+      {
+        wallet_address: account,
+        status: "pending",
+      },
+    ]);
+
+  if (error) {
+    console.error(error);
+    alert("Registration failed");
+    return;
+  }
+
+  alert("Wallet registered successfully!");
+};
   return (
     <div
       onClick={onClick}
@@ -385,7 +419,12 @@ function LoginPage() {
                 </p>
               </Card>
             </section>
-
+<button
+  onClick={handleRegister}
+  className="px-4 py-2 rounded-lg bg-purple-600 text-white mt-4"
+>
+  Register Wallet for Rewards
+</button>
             <section
               style={{
                 display: "grid",
