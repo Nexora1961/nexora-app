@@ -20,47 +20,6 @@ function shortWallet(address) {
 }
 
 function Card({ children, border = "#8b5cf6", glow = false, onClick }) {
-const handleRegister = async () => {
-  if (!account) {
-    alert("Connect wallet first");
-    return;
-  }
-
-  try {
-    alert("Wallet registered for rewards.");
-    console.log("Wallet:", account);
-  } catch (error) {
-    console.error(error);
-    alert("Registration failed");
-  }
-};
-
-  try {
-    alert("Wallet registered for rewards.");
-    console.log("Wallet:", account);
-  } catch (error) {
-    console.error(error);
-    alert("Registration failed");
-  }
-};
-
-  alert("Wallet registered for rewards.");
-
-  const { data: existing } = await supabase
-    const handleRegister = async () => {
-  if (!account) {
-    alert("Connect wallet first");
-    return;
-  }
-
-  try {
-    alert("Wallet registered for rewards.");
-    console.log("Wallet:", account);
-  } catch (error) {
-    console.error(error);
-    alert("Registration failed");
-  }
-};
   return (
     <div
       onClick={onClick}
