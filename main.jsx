@@ -42,10 +42,13 @@ function AdminPanel() {
 
   useEffect(() => {
     async function loadAdminData() {
-      const { data: ambassadorData } = await supabase
-        .from("ambassador_applications")
-       .select("id, wallet_address, status, x_username, telegram_username, discord_username, languages, experience, reason")
-        .order("created_at", { ascending: false });
+    const { data: ambassadorData, error: ambassadorError } = await supabase
+  .from("ambassador_applications")
+  .select("id, wallet_address, status, x_username, telegram_username, discord_username, languages, experience, reason, created_at")
+  .order("created_at", { ascending: false });
+
+console.log("Ambassador data:", ambassadorData);
+console.log("Ambassador error:", ambassadorError);
 
       const { data: rewardData } = await supabase
         .from("reward_checkins")
