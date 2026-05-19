@@ -282,45 +282,55 @@ const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
   }
 
   async function handleAmbassadorApply() {
-    if (!walletAddress) {
-      alert("Please connect your wallet first.");
+  if (!walletAddress) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+
+  if (!xUsername || !telegramUsername || !discordUsername || !reason) {
+    alert("Please complete the required ambassador application fields.");
+    return;
+  }
+
+  try {
+    const { data: existing } = await supabase
+      .from("ambassador_applications")
+      .select("status")
+      .eq("wallet_address", walletAddress)
+      .limit(1);
+
+    if (existing && existing.length > 0) {
+      setAmbassadorStatus(existing[0].status);
+      alert("You already applied for the Ambassador Program. ✅");
       return;
     }
 
-    try {
-      const { data: existing } = await supabase
-        .from("ambassador_applications")
-        .select("status")
-        .eq("wallet_address", walletAddress)
-        .limit(1);
+    const { error } = await supabase.from("ambassador_applications").insert([
+      {
+        wallet_address: walletAddress,
+        status: "pending",
+        x_username: xUsername,
+        telegram_username: telegramUsername,
+        discord_username: discordUsername,
+        languages,
+        experience,
+        reason,
+      },
+    ]);
 
-      if (existing && existing.length > 0) {
-        setAmbassadorStatus(existing[0].status);
-        alert("You already applied for the Ambassador Program. ✅");
-        return;
-      }
-
-      const { error } = await supabase.from("ambassador_applications").insert([
-        {
-          wallet_address: walletAddress,
-          status: "pending",
-        },
-      ]);
-
-      if (error) {
-        console.error(error);
-        alert("Ambassador table may need to be created in Supabase first.");
-        return;
-      }
-
-      setAmbassadorStatus("pending");
-      alert("Ambassador application submitted successfully. 💜");
-    } catch (error) {
+    if (error) {
       console.error(error);
       alert("Application failed.");
+      return;
     }
-  }
 
+    setAmbassadorStatus("pending");
+    alert("Ambassador application submitted successfully. 💜");
+  } catch (error) {
+    console.error(error);
+    alert("Application failed.");
+  }
+}
   const waveProgress = Math.min((balanceNumber / 500) * 100, 100);
   const coreProgress = Math.min((balanceNumber / 5000) * 100, 100);
   const xpProgress = Math.min((xp / 3000) * 100, 100);
