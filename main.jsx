@@ -4,7 +4,7 @@ import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
 
-const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";f
+const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MF11AGREWlKRo36W5v3AjA_dWobnP5c";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
