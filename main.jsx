@@ -66,8 +66,8 @@ function AdminPanel() {
       .eq("id", id);
 
     if (error) {
-      alert("Error updating ambassador status.");
       console.error(error);
+      alert("Error updating ambassador.");
       return;
     }
 
@@ -85,11 +85,16 @@ function AdminPanel() {
       <h3>🌟 Ambassador Applications</h3>
 
       {ambassadors.map((item) => (
-        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
-          <p style={{ margin: 0 }}>{item.wallet_address}</p>
-          <p style={{ color: "#facc15", margin: "6px 0 0" }}>
-            Status: {item.status}
-          </p>
+        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "16px 0" }}>
+          <p style={{ margin: 0, fontWeight: "bold" }}>{item.wallet_address}</p>
+          <p style={{ color: "#facc15", margin: "6px 0" }}>Status: {item.status}</p>
+
+          <p style={{ margin: "6px 0" }}>X: {item.x_username || "Not provided"}</p>
+          <p style={{ margin: "6px 0" }}>Telegram: {item.telegram_username || "Not provided"}</p>
+          <p style={{ margin: "6px 0" }}>Discord: {item.discord_username || "Not provided"}</p>
+          <p style={{ margin: "6px 0" }}>Languages: {item.languages || "Not provided"}</p>
+          <p style={{ margin: "6px 0" }}>Experience: {item.experience || "Not provided"}</p>
+          <p style={{ margin: "6px 0" }}>Reason: {item.reason || "Not provided"}</p>
 
           <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
             <button
