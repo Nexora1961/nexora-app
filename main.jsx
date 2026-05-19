@@ -148,6 +148,13 @@ function LoginPage() {
   const [rank, setRank] = useState("Starter");
   const [xp, setXp] = useState(0);
   const [balanceNumber, setBalanceNumber] = useState(0);
+  const [xUsername, setXUsername] = useState("");
+const [telegramUsername, setTelegramUsername] = useState("");
+const [discordUsername, setDiscordUsername] = useState("");
+const [languages, setLanguages] = useState("");
+const [experience, setExperience] = useState("");
+const [reason, setReason] = useState("");
+const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
 
   const walletAddress = user?.wallet?.address;
 
