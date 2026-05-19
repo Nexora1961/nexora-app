@@ -68,11 +68,62 @@ function AdminPanel() {
 
       <h3>🌟 Ambassador Applications</h3>
       {ambassadors.map((item) => (
-        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
-          <p style={{ margin: 0 }}>{item.wallet_address}</p>
-          <p style={{ color: "#facc15", margin: "6px 0 0" }}>Status: {item.status}</p>
-       <div key={item.id} ...>
+  <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
+    <p style={{ margin: 0 }}>{item.wallet_address}</p>
 
+    <p style={{ color: "#facc15", margin: "6px 0 0" }}>
+      Status: {item.status}
+    </p>
+
+    <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
+      <button
+        onClick={async () => {
+          await supabase
+            .from("ambassador_applications")
+            .update({ status: "approved" })
+            .eq("id", item.id);
+
+          alert("Ambassador approved 💜");
+          window.location.reload();
+        }}
+        style={{
+          background: "#22c55e",
+          color: "white",
+          border: "none",
+          padding: "10px 18px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          fontWeight: "bold",
+        }}
+      >
+        Approve
+      </button>
+
+      <button
+        onClick={async () => {
+          await supabase
+            .from("ambassador_applications")
+            .update({ status: "rejected" })
+            .eq("id", item.id);
+
+          alert("Ambassador rejected");
+          window.location.reload();
+        }}
+        style={{
+          background: "#ef4444",
+          color: "white",
+          border: "none",
+          padding: "10px 18px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          fontWeight: "bold",
+        }}
+      >
+        Reject
+      </button>
+    </div>
+  </div>
+))}
   wallet
   status
 
