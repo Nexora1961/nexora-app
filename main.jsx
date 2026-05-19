@@ -582,17 +582,11 @@ function LoginPage() {
               </p>
             </Card>
 
-            {isAdmin && (
-              <div style={{ marginTop: "24px" }}>
-                <Card border="#facc15">
-                  <h2>🛡️ Admin Access</h2>
-                  <p style={{ color: "#cfcfcf" }}>
-                    Admin wallet detected. Future tools can approve ambassadors,
-                    review rewards, and manage XP manually.
-                  </p>
-                </Card>
-              </div>
-            )}
+          {isAdmin && (
+  <div style={{ marginTop: "24px" }}>
+    <AdminPanel />
+  </div>
+)}
           </>
         )}
       </div>
