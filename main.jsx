@@ -52,7 +52,8 @@ function AdminPanel() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      setAmbassadors(ambassadorData || []);
+    console.log(ambassadorData);
+setAmbassadors(ambassadorData || []);
       setRewards(rewardData || []);
     }
 
