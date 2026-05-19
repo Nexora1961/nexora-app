@@ -475,6 +475,55 @@ function LoginPage() {
 
             <Card>
               <h2>Advanced Nexora Role System</h2>
+              <section
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+    gap: "24px",
+    marginTop: "24px",
+    marginBottom: "24px",
+  }}
+>
+  <Card border="#facc15">
+    <h2>🚧 Daily XP Check-Ins</h2>
+    <p style={{ color: "#cfcfcf", lineHeight: 1.6 }}>
+      Earn bonus XP through daily ecosystem activity and community participation.
+    </p>
+    <p style={{ color: "#facc15", fontWeight: "bold" }}>
+      Under Development
+    </p>
+  </Card>
+
+  <Card border="#22c55e">
+    <h2>🏆 Leaderboards</h2>
+    <p style={{ color: "#cfcfcf", lineHeight: 1.6 }}>
+      Compete with other holders, ambassadors, and top community contributors.
+    </p>
+    <p style={{ color: "#22c55e", fontWeight: "bold" }}>
+      Coming Soon
+    </p>
+  </Card>
+
+  <Card border="#8b5cf6">
+    <h2>🎮 Zealy & Galxe Sync</h2>
+    <p style={{ color: "#cfcfcf", lineHeight: 1.6 }}>
+      Sync community quests, campaigns, and XP progression directly into Nexora.
+    </p>
+    <p style={{ color: "#8b5cf6", fontWeight: "bold" }}>
+      In Development
+    </p>
+  </Card>
+
+  <Card border="#38bdf8">
+    <h2>🛡️ Guardian Access</h2>
+    <p style={{ color: "#cfcfcf", lineHeight: 1.6 }}>
+      Unlock special ecosystem privileges, future rewards, and exclusive access.
+    </p>
+    <p style={{ color: "#38bdf8", fontWeight: "bold" }}>
+      Future Feature
+    </p>
+  </Card>
+</section>
               <p style={{ color: "#cfcfcf", lineHeight: 1.7 }}>
                 Roles are based on NEX balance, wallet registration, XP, and
                 ambassador status. Future upgrades can include Zealy, Galxe,
