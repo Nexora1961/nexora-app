@@ -71,10 +71,14 @@ function AdminPanel() {
         <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
           <p style={{ margin: 0 }}>{item.wallet_address}</p>
           <p style={{ color: "#facc15", margin: "6px 0 0" }}>Status: {item.status}</p>
-        </div>
-      <p style={{ color: "#facc15", margin: "6px 0 0" }}>
-  Status: {item.status}
-</p>
+       <div key={item.id} ...>
+
+  wallet
+  status
+
+  buttons
+
+</div>
 
 <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
   <button
