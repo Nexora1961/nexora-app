@@ -423,12 +423,30 @@ function LoginPage() {
                 marginBottom: "24px",
               }}
             >
-              <Card onClick={handleRewardCheckIn} glow>
-                <h2>💜 Register for Rewards</h2>
-                <p style={{ color: "#cfcfcf" }}>
-                  Register your wallet for future Nexora holder rewards.
-                </p>
-              </Card>
+          <Card glow>
+  <h2>💜 Register for Rewards</h2>
+
+  <p style={{ color: "#cfcfcf" }}>
+    Register your wallet for future Nexora holder rewards.
+  </p>
+
+  <button
+    onClick={handleRewardCheckIn}
+    style={{
+      marginTop: "18px",
+      background: "#8b5cf6",
+      color: "white",
+      border: "none",
+      padding: "14px 24px",
+      borderRadius: "14px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      fontSize: "16px",
+    }}
+  >
+    Register Now
+  </button>
+</Card>
 
          <Card border="#facc15" glow>
   <h2>🌟 Apply as Ambassador</h2>
