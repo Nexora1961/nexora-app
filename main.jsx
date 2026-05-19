@@ -36,7 +36,54 @@ function Card({ children, border = "#8b5cf6", glow = false, onClick }) {
     </div>
   );
 }
+function AdminPanel() {
+  const [ambassadors, setAmbassadors] = useState([]);
+  const [rewards, setRewards] = useState([]);
 
+  useEffect(() => {
+    async function loadAdminData() {
+      const { data: ambassadorData } = await supabase
+        .from("ambassador_applications")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      const { data: rewardData } = await supabase
+        .from("reward_checkins")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      setAmbassadors(ambassadorData || []);
+      setRewards(rewardData || []);
+    }
+
+    loadAdminData();
+  }, []);
+
+  return (
+    <Card border="#facc15">
+      <h2>🛡️ Admin Dashboard</h2>
+      <p style={{ color: "#cfcfcf" }}>
+        Review ambassador applications and reward registrations.
+      </p>
+
+      <h3>🌟 Ambassador Applications</h3>
+      {ambassadors.map((item) => (
+        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
+          <p style={{ margin: 0 }}>{item.wallet_address}</p>
+          <p style={{ color: "#facc15", margin: "6px 0 0" }}>Status: {item.status}</p>
+        </div>
+      ))}
+
+      <h3 style={{ marginTop: "28px" }}>💜 Reward Check-Ins</h3>
+      {rewards.map((item) => (
+        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
+          <p style={{ margin: 0 }}>{item.wallet_address}</p>
+          <p style={{ color: "#22c55e", margin: "6px 0 0" }}>Status: {item.status}</p>
+        </div>
+      ))}
+    </Card>
+  );
+}
 function LoginPage() {
   const { login, authenticated, user, logout } = usePrivy();
 
