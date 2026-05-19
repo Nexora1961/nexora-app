@@ -4,7 +4,7 @@ import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
 
-const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
+const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";f
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MF11AGREWlKRo36W5v3AjA_dWobnP5c";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -430,12 +430,29 @@ function LoginPage() {
                 </p>
               </Card>
 
-              <Card onClick={handleAmbassadorApply} border="#facc15" glow>
-                <h2>🌟 Apply as Ambassador</h2>
-                <p style={{ color: "#cfcfcf" }}>
-                  Apply to become part of Nexora’s community growth team.
-                </p>
-              </Card>
+         <Card border="#facc15" glow>
+  <h2>🌟 Apply as Ambassador</h2>
+  <p style={{ color: "#cfcfcf" }}>
+    Apply to become part of Nexora’s community growth team.
+  </p>
+
+  <button
+    onClick={handleAmbassadorApply}
+    style={{
+      marginTop: "18px",
+      background: "#facc15",
+      color: "#111827",
+      border: "none",
+      padding: "14px 24px",
+      borderRadius: "14px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      fontSize: "16px",
+    }}
+  >
+    Apply Now
+  </button>
+</Card>
             </section>
 
             <Card>
