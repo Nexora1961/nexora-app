@@ -44,7 +44,7 @@ function AdminPanel() {
     async function loadAdminData() {
     const { data: ambassadorData, error: ambassadorError } = await supabase
   .from("ambassador_applications")
-  .select("id, wallet_address, status, x_username, telegram_username, discord_username, languages, experience, reason, created_at")
+  .select("*")
   .order("created_at", { ascending: false });
 
 console.log("Ambassador data:", ambassadorData);
