@@ -582,7 +582,7 @@ const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
   </p>
 
   <button
-    onClick={handleAmbassadorApply}
+    onClick={() => setShowAmbassadorForm(true)}
     style={{
       marginTop: "18px",
       background: "#facc15",
