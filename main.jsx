@@ -188,7 +188,7 @@ const textareaStyle = {
   resize: "vertical",
 };
   const walletAddress = user?.wallet?.address;
-
+const isMobile = window.innerWidth < 768;
   const isAdmin =
     walletAddress?.toLowerCase() ===
     "0x3645a56ad01642c2ee7fa8ab301cea09f107e2f2";
