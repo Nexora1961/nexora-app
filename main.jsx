@@ -164,7 +164,29 @@ const [languages, setLanguages] = useState("");
 const [experience, setExperience] = useState("");
 const [reason, setReason] = useState("");
 const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
+const inputStyle = {
+  width: "100%",
+  padding: "14px",
+  marginTop: "12px",
+  borderRadius: "12px",
+  border: "1px solid #8b5cf6",
+  background: "#050510",
+  color: "white",
+  fontSize: "16px",
+};
 
+const textareaStyle = {
+  width: "100%",
+  minHeight: "90px",
+  padding: "14px",
+  marginTop: "12px",
+  borderRadius: "12px",
+  border: "1px solid #8b5cf6",
+  background: "#050510",
+  color: "white",
+  fontSize: "16px",
+  resize: "vertical",
+};
   const walletAddress = user?.wallet?.address;
 
   const isAdmin =
