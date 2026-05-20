@@ -661,7 +661,76 @@ const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
                 Ambassador → Guardian
               </p>
             </Card>
+{showAmbassadorForm && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.75)",
+      zIndex: 9999,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+    }}
+  >
+    <div
+      style={{
+        background: "#111827",
+        border: "1px solid #facc15",
+        borderRadius: "24px",
+        padding: "28px",
+        width: "100%",
+        maxWidth: "620px",
+        color: "white",
+      }}
+    >
+      <h2>🌟 Ambassador Application</h2>
+      <p style={{ color: "#cfcfcf" }}>
+        Please complete the required fields below.
+      </p>
 
+      <input placeholder="X username *" value={xUsername} onChange={(e) => setXUsername(e.target.value)} style={inputStyle} />
+      <input placeholder="Telegram username *" value={telegramUsername} onChange={(e) => setTelegramUsername(e.target.value)} style={inputStyle} />
+      <input placeholder="Discord username *" value={discordUsername} onChange={(e) => setDiscordUsername(e.target.value)} style={inputStyle} />
+      <input placeholder="Languages spoken" value={languages} onChange={(e) => setLanguages(e.target.value)} style={inputStyle} />
+      <textarea placeholder="Experience" value={experience} onChange={(e) => setExperience(e.target.value)} style={textareaStyle} />
+      <textarea placeholder="Why do you want to join Nexora? *" value={reason} onChange={(e) => setReason(e.target.value)} style={textareaStyle} />
+
+      <div style={{ display: "flex", gap: "12px", marginTop: "18px" }}>
+        <button
+          onClick={handleAmbassadorApply}
+          style={{
+            background: "#facc15",
+            color: "#111827",
+            border: "none",
+            padding: "14px 24px",
+            borderRadius: "14px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          Submit Application
+        </button>
+
+        <button
+          onClick={() => setShowAmbassadorForm(false)}
+          style={{
+            background: "transparent",
+            color: "white",
+            border: "1px solid #8b5cf6",
+            padding: "14px 24px",
+            borderRadius: "14px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
           {isAdmin && (
   <div style={{ marginTop: "24px" }}>
     <AdminPanel />
