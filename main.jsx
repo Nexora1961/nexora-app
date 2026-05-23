@@ -101,34 +101,40 @@ return (
 
           <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
             <button
-              onClick={() => updateAmbassadorStatus(item.id, "approved")}
-style={{
-  background: "#22c55e",
-  color: "white",
-  border: "none",
-  padding: "10px 18px",
-  borderRadius: "10px",
-  cursor: "pointer",
-  fontWeight: "bold",
-}}
->
-Approve
-</button>
+              {item.status === "pending" && (
+  <>
+    <button
+      onClick={() => updateAmbassadorStatus(item.id, "approved")}
+      style={{
+        background: "#22c55e",
+        color: "white",
+        border: "none",
+        padding: "10px 18px",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        marginRight: "10px",
+      }}
+    >
+      Approve
+    </button>
 
-<button
-onClick={() => updateAmbassadorStatus(item.id, "rejected")}
-...
-Reject
-</button>
-          </div>
-        </div>
-      ))}
-
-      <h3 style={{ marginTop: "28px" }}>💜 Reward Check-Ins</h3>
-
-      {rewards.map((item) => (
-        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "12px 0" }}>
-          <p style={{ margin: 0 }}>{item.wallet_address}</p>
+    <button
+      onClick={() => updateAmbassadorStatus(item.id, "rejected")}
+      style={{
+        background: "#ef4444",
+        color: "white",
+        border: "none",
+        padding: "10px 18px",
+        borderRadius: "10px",
+        cursor: "pointer",
+        fontWeight: "bold",
+      }}
+    >
+      Reject
+    </button>
+  </>
+)}
           <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
             Status: {item.status}
           </p>
