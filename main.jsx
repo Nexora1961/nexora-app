@@ -139,7 +139,7 @@ return (
             Status: {item.status}
    </p>
 </div>
-}
+
 </Card>
   );
 }
