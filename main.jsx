@@ -130,7 +130,7 @@ return (
         cursor: "pointer",
         fontWeight: "bold",
       }}
-    >
+     >
       Reject
     </button>
   </>
