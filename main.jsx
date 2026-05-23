@@ -40,45 +40,44 @@ function AdminPanel() {
   const [ambassadors, setAmbassadors] = useState([]);
   const [rewards, setRewards] = useState([]);
 
-  useEffect(() => {
-    async function loadAdminData() {
+  async function loadAdminData() {
     const { data: ambassadorData, error: ambassadorError } = await supabase
-  .from("ambassador_applications")
-  .select("*")
-  .order("created_at", { ascending: false });
+      .from("ambassador_applications")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-console.log("Ambassador data:", ambassadorData);
-console.log("Ambassador error:", ambassadorError);
+    console.log("Ambassador data:", ambassadorData);
+    console.log("Ambassador error:", ambassadorError);
 
-      const { data: rewardData } = await supabase
-        .from("reward_checkins")
-        .select("*")
-        .order("created_at", { ascending: false });
+    const { data: rewardData } = await supabase
+      .from("reward_checkins")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    console.log(ambassadorData);
-setAmbassadors(ambassadorData || []);
-      setRewards(rewardData || []);
-    }
+    setAmbassadors(ambassadorData || []);
+    setRewards(rewardData || []);
+  }
 
+  useEffect(() => {
     loadAdminData();
   }, []);
 
-async function updateAmbassadorStatus(id, status) {
-  const { error } = await supabase
-    .from("ambassador_applications")
-    .update({ status })
-    .eq("id", id);
+  async function updateAmbassadorStatus(id, status) {
+    const { error } = await supabase
+      .from("ambassador_applications")
+      .update({ status })
+      .eq("id", id);
 
-  if (error) {
-    console.error(error);
-    return;
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    alert(`Ambassador ${status} 💜`);
+    window.location.reload();
   }
 
-  alert(`Ambassador ${status} 💜`);
-  window.location.reload();
-}
-
-return (
+  return (
     <Card border="#facc15">
       <h2>🛡️ Admin Dashboard</h2>
       <p style={{ color: "#cfcfcf" }}>
@@ -87,10 +86,15 @@ return (
 
       <h3>🌟 Ambassador Applications</h3>
 
-     {ambassadors.map((item) => (
-        <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "16px 0" }}>
+      {ambassadors.map((item) => (
+        <div
+          key={item.id}
+          style={{ borderTop: "1px solid #374151", padding: "16px 0" }}
+        >
           <p style={{ margin: 0, fontWeight: "bold" }}>{item.wallet_address}</p>
-          <p style={{ color: "#facc15", margin: "6px 0" }}>Status: {item.status}</p>
+          <p style={{ color: "#facc15", margin: "6px 0" }}>
+            Status: {item.status}
+          </p>
 
           <p style={{ margin: "6px 0" }}>X: {item.x_username || "Not provided"}</p>
           <p style={{ margin: "6px 0" }}>Telegram: {item.telegram_username || "Not provided"}</p>
@@ -99,48 +103,41 @@ return (
           <p style={{ margin: "6px 0" }}>Experience: {item.experience || "Not provided"}</p>
           <p style={{ margin: "6px 0" }}>Reason: {item.reason || "Not provided"}</p>
 
-          <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
-           
-              {item.status === "pending" && (
-  <>
-    <button
-      onClick={() => updateAmbassadorStatus(item.id, "approved")}
-      style={{
-        background: "#22c55e",
-        color: "white",
-        border: "none",
-        padding: "10px 18px",
-        borderRadius: "10px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        marginRight: "10px",
-      }}
-    >
-      Approve
-    </button>
+          {item.status === "pending" && (
+            <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
+              <button
+                onClick={() => updateAmbassadorStatus(item.id, "approved")}
+                style={{
+                  background: "#22c55e",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 18px",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Approve
+              </button>
 
-    <button
-      onClick={() => updateAmbassadorStatus(item.id, "rejected")}
-      style={{
-        background: "#ef4444",
-        color: "white",
-        border: "none",
-        padding: "10px 18px",
-        borderRadius: "10px",
-        cursor: "pointer",
-        fontWeight: "bold",
-      }}
-     >
-      Reject
-    </button>
-  </>
-
-              <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
-            Status: {item.status}
-          </p>
-
+              <button
+                onClick={() => updateAmbassadorStatus(item.id, "rejected")}
+                style={{
+                  background: "#ef4444",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 18px",
+                  borderRadius: "10px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Reject
+              </button>
+            </div>
+          )}
         </div>
-     ))}
+      ))}
     </Card>
   );
 }
