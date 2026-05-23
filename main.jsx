@@ -135,15 +135,13 @@ return (
     </button>
   </>
 )}
-          <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
+           <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
             Status: {item.status}
-  </p>
+          </p>
 
-</div>
-
-</div>
-
-</Card>
+        </div>
+      ))}
+    </Card>
   );
 }
 function LoginPage() {
