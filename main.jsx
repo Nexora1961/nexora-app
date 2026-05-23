@@ -68,6 +68,12 @@ setAmbassadors(ambassadorData || []);
       .from("ambassador_applications")
       .update({ status })
       .eq("id", id);
+    if (error) {
+  console.error(error);
+  return;
+}
+
+loadAdminData();
 
     if (error) {
       console.error(error);
