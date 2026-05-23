@@ -87,7 +87,7 @@ return (
 
       <h3>🌟 Ambassador Applications</h3>
 
-      {ambassadors.map((item) => (
+     {ambassadors.map((item) => (
         <div key={item.id} style={{ borderTop: "1px solid #374151", padding: "16px 0" }}>
           <p style={{ margin: 0, fontWeight: "bold" }}>{item.wallet_address}</p>
           <p style={{ color: "#facc15", margin: "6px 0" }}>Status: {item.status}</p>
@@ -135,7 +135,7 @@ return (
     </button>
   </>
 )}
-           <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
+              <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
             Status: {item.status}
           </p>
 
