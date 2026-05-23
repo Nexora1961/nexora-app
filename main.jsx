@@ -63,17 +63,19 @@ setAmbassadors(ambassadorData || []);
     loadAdminData();
   }, []);
 
-  async function updateAmbassadorStatus(id, status) {
-    const { error } = await supabase
-      .from("ambassador_applications")
-      .update({ status })
-      .eq("id", id);
-    if (error) {
-  console.error(error);
-  return;
-}
+async function updateAmbassadorStatus(id, status) {
+  const { error } = await supabase
+    .from("ambassador_applications")
+    .update({ status })
+    .eq("id", id);
 
-loadAdminData();
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  loadAdminData();
+}
 
     if (error) {
       console.error(error);
