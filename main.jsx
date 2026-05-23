@@ -102,33 +102,24 @@ return (
           <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
             <button
               onClick={() => updateAmbassadorStatus(item.id, "approved")}
-              style={{
-                background: "#22c55e",
-                color: "white",
-                border: "none",
-                padding: "10px 18px",
-                borderRadius: "10px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              Approve
-            </button>
+style={{
+  background: "#22c55e",
+  color: "white",
+  border: "none",
+  padding: "10px 18px",
+  borderRadius: "10px",
+  cursor: "pointer",
+  fontWeight: "bold",
+}}
+>
+Approve
+</button>
 
-            <button
-              onClick={() => updateAmbassadorStatus(item.id, "rejected")}
-              style={{
-                background: "#ef4444",
-                color: "white",
-                border: "none",
-                padding: "10px 18px",
-                borderRadius: "10px",
-                cursor: "pointer",
-                fontWeight: "bold",
-              }}
-            >
-              Reject
-            </button>
+<button
+onClick={() => updateAmbassadorStatus(item.id, "rejected")}
+...
+Reject
+</button>
           </div>
         </div>
       ))}
