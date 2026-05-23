@@ -134,7 +134,7 @@ return (
       Reject
     </button>
   </>
-)}
+
               <p style={{ color: "#22c55e", margin: "6px 0 0" }}>
             Status: {item.status}
           </p>
