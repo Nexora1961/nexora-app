@@ -83,10 +83,10 @@ async function updateAmbassadorStatus(id, status) {
       return;
     }
 
-    alert(`Ambassador ${status} 💜`);
-    window.location.reload();
-  }
+   alert(`Ambassador ${status} 💜`);
+  window.location.reload();
 }
+
 return (
     <Card border="#facc15">
       <h2>🛡️ Admin Dashboard</h2>
