@@ -74,16 +74,7 @@ async function updateAmbassadorStatus(id, status) {
     return;
   }
 
-  loadAdminData();
-}
-
-    if (error) {
-      console.error(error);
-      alert("Error updating ambassador.");
-      return;
-    }
-
-   alert(`Ambassador ${status} 💜`);
+  alert(`Ambassador ${status} 💜`);
   window.location.reload();
 }
 
