@@ -86,8 +86,8 @@ async function updateAmbassadorStatus(id, status) {
     alert(`Ambassador ${status} 💜`);
     window.location.reload();
   }
-
-  return (
+}
+return (
     <Card border="#facc15">
       <h2>🛡️ Admin Dashboard</h2>
       <p style={{ color: "#cfcfcf" }}>
