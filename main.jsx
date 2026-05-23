@@ -100,7 +100,7 @@ return (
           <p style={{ margin: "6px 0" }}>Reason: {item.reason || "Not provided"}</p>
 
           <div style={{ marginTop: "12px", display: "flex", gap: "10px" }}>
-            <button
+           
               {item.status === "pending" && (
   <>
     <button
