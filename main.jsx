@@ -598,10 +598,11 @@ const isMobile = window.innerWidth < 768;
   </p>
 
   <button
+    disabled
     onClick={() => setShowAmbassadorForm(true)}
     style={{
       marginTop: "18px",
-      background: "#facc15",
+      background: "#374151",
       color: "#111827",
       border: "none",
       padding: "14px 24px",
@@ -611,7 +612,7 @@ const isMobile = window.innerWidth < 768;
       fontSize: "16px",
     }}
   >
-    Apply Now
+    Phase 2 Coming Soon 🚧
   </button>
 </Card>
             </section>
@@ -717,7 +718,7 @@ const isMobile = window.innerWidth < 768;
         <button
           onClick={handleAmbassadorApply}
           style={{
-            background: "#facc15",
+            cursor: "not-allowed",
             color: "#111827",
             border: "none",
             padding: "14px 24px",
