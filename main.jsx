@@ -6,8 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 
 
    
-  }
-}
+  
+
 
 const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
