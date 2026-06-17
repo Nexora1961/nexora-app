@@ -10,6 +10,29 @@ async function trackPortalLogin(walletAddress) {
     .from("portal_users")
     .select("id, login_count")
     .eq("wallet_address", walletAddress)
+    .maybeSingle();
+
+  if (data) {
+    await supabase
+      .from("portal_users")
+      .update({
+        last_login: new Date().toISOString(),
+        login_count: (data.login_count || 0) + 1,
+      })
+      .eq("id", data.id);
+  } else {
+    await supabase.from("portal_users").insert({
+      wallet_address: walletAddress,
+      last_login: new Date().toISOString(),
+      login_count: 1,
+    });
+  }
+}
+
+  const { data } = await supabase
+    .from("portal_users")
+    .select("id, login_count")
+    .eq("wallet_address", walletAddress)
     .single();
 
   if (data) {
