@@ -712,7 +712,9 @@ const isMobile = window.innerWidth < 768;
       <tbody>
         {portalUsers.map((u) => (
           <tr key={u.id}>
-            <td>{shortWallet(u.wallet_address)}</td>
+             <td title={u.wallet_address}>
+  {shortWallet(u.wallet_address)}
+</td>
             <td>
               {u.last_login
                 ? new Date(u.last_login).toLocaleString()
