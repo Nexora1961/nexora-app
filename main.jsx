@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
 
 
-    });
+   
   }
 }
 
