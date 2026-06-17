@@ -234,7 +234,8 @@ loadPortalUsers();
     }
   }
 
-  trackWalletLogin();
+  loadPortalUsers();
+trackWalletLogin();
 }, [authenticated, user]);
 const inputStyle = {
   width: "100%",
