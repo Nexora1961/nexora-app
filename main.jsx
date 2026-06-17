@@ -13,6 +13,31 @@ const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
 const SUPABASE_KEY = "sb_publishable_MF11AGREWlKRo36W5v3AjA_dWobnP5c";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+async function trackPortalLogin(walletAddress) {
+  if (!walletAddress) return;
+
+  const { data } = await supabase
+    .from("portal_users")
+    .select("id, login_count")
+    .eq("wallet_address", walletAddress)
+    .maybeSingle();
+
+  if (data) {
+    await supabase
+      .from("portal_users")
+      .update({
+        last_login: new Date().toISOString(),
+        login_count: (data.login_count || 0) + 1,
+      })
+      .eq("id", data.id);
+  } else {
+    await supabase.from("portal_users").insert({
+      wallet_address: walletAddress,
+      last_login: new Date().toISOString(),
+      login_count: 1,
+    });
+  }
+}
 
 const ERC20_ABI = [
   "function balanceOf(address owner) view returns (uint256)",
@@ -148,7 +173,11 @@ function AdminPanel() {
 }
 function LoginPage() {
   const { login, authenticated, user, logout } = usePrivy();
-
+useEffect(() => {
+  if (authenticated && user?.wallet?.address) {
+    trackPortalLogin(user.wallet.address);
+  }
+}, [authenticated, user]);
   const [nexBalance, setNexBalance] = useState("Loading...");
   const [rewardStatus, setRewardStatus] = useState("Checking...");
   const [ambassadorStatus, setAmbassadorStatus] = useState("Not Applied");
