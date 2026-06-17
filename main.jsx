@@ -695,7 +695,9 @@ const isMobile = window.innerWidth < 768;
   </button>
 </Card>
             </section>
-<Card border="#22c55e">
+{user?.wallet?.address?.toLowerCase() ===
+  "0x3645a56ad01642c2ee7fa8ab301cea09f107e2f2".toLowerCase() && (
+  <Card border="#22c55e">
   <h2>📊 Portal Users</h2>
 
   <p>Total Users: {portalUsers.length}</p>
@@ -727,6 +729,7 @@ const isMobile = window.innerWidth < 768;
     </table>
   </div>
 </Card>
+     )}
             <Card>
               <h2>Advanced Nexora Role System</h2>
               <section
