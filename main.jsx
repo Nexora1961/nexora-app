@@ -158,6 +158,37 @@ const [languages, setLanguages] = useState("");
 const [experience, setExperience] = useState("");
 const [reason, setReason] = useState("");
 const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
+  useEffect(() => {
+  async function trackWalletLogin() {
+    const walletAddress = user?.wallet?.address;
+
+    if (!authenticated || !walletAddress) return;
+
+    const { data: existingUser } = await supabase
+      .from("portal_users")
+      .select("login_count")
+      .eq("wallet_address", walletAddress)
+      .maybeSingle();
+
+    if (existingUser) {
+      await supabase
+        .from("portal_users")
+        .update({
+          last_login: new Date().toISOString(),
+          login_count: (existingUser.login_count || 0) + 1,
+        })
+        .eq("wallet_address", walletAddress);
+    } else {
+      await supabase.from("portal_users").insert({
+        wallet_address: walletAddress,
+        last_login: new Date().toISOString(),
+        login_count: 1,
+      });
+    }
+  }
+
+  trackWalletLogin();
+}, [authenticated, user]);
 const inputStyle = {
   width: "100%",
   padding: "14px",
