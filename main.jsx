@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
 
 
+
    
   
 
@@ -194,6 +195,7 @@ const [experience, setExperience] = useState("");
 const [reason, setReason] = useState("");
 const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
   async function loadPortalUsers() {
+
   const { data, error } = await supabase
     .from("portal_users")
     .select("*")
@@ -208,7 +210,7 @@ const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
     const walletAddress = user?.wallet?.address;
 
     if (!authenticated || !walletAddress) return;
-
+loadPortalUsers();
     const { data: existingUser } = await supabase
       .from("portal_users")
       .select("login_count")
