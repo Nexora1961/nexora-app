@@ -18,37 +18,8 @@ async function trackPortalLogin(walletAddress) {
       .update({
         last_login: new Date().toISOString(),
         login_count: (data.login_count || 0) + 1,
-      })
-      .eq("id", data.id);
-  } else {
-    await supabase.from("portal_users").insert({
-      wallet_address: walletAddress,
-      last_login: new Date().toISOString(),
-      login_count: 1,
-    });
-  import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
-import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
-import { ethers } from "ethers";
-import { createClient } from "@supabase/supabase-js";
-
-const SUPABASE_URL = "...";
-const SUPABASE_KEY = "...";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-async function trackPortalLogin(walletAddress) {
-  if (!walletAddress) return;
-
-  const { data } = await supabase
-    .from("portal_users")
-    .select("id, login_count")
-    .eq("wallet_address", walletAddress)
-    .maybeSingle();
-
-  if (data) {
-    await supabase
-      .from("portal_users")
+    
+      
       .update({
         last_login: new Date().toISOString(),
         login_count: (data.login_count || 0) + 1,
