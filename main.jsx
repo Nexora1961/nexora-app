@@ -26,14 +26,25 @@ async function trackPortalLogin(walletAddress) {
       last_login: new Date().toISOString(),
       login_count: 1,
     });
-  }
-}
+  import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom/client";
+import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
+import { ethers } from "ethers";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_URL = "...";
+const SUPABASE_KEY = "...";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function trackPortalLogin(walletAddress) {
+  if (!walletAddress) return;
 
   const { data } = await supabase
     .from("portal_users")
     .select("id, login_count")
     .eq("wallet_address", walletAddress)
-    .single();
+    .maybeSingle();
 
   if (data) {
     await supabase
@@ -44,6 +55,13 @@ async function trackPortalLogin(walletAddress) {
       })
       .eq("id", data.id);
   } else {
+    await supabase.from("portal_users").insert({
+      wallet_address: walletAddress,
+      last_login: new Date().toISOString(),
+      login_count: 1,
+    });
+  }
+}
     await supabase.from("portal_users").insert({
       wallet_address: walletAddress,
       last_login: new Date().toISOString(),
