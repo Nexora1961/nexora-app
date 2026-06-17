@@ -3,6 +3,31 @@ import ReactDOM from "react-dom/client";
 import { PrivyProvider, usePrivy } from "@privy-io/react-auth";
 import { ethers } from "ethers";
 import { createClient } from "@supabase/supabase-js";
+async function trackPortalLogin(walletAddress) {
+  if (!walletAddress) return;
+
+  const { data } = await supabase
+    .from("portal_users")
+    .select("id, login_count")
+    .eq("wallet_address", walletAddress)
+    .single();
+
+  if (data) {
+    await supabase
+      .from("portal_users")
+      .update({
+        last_login: new Date().toISOString(),
+        login_count: (data.login_count || 0) + 1,
+      })
+      .eq("id", data.id);
+  } else {
+    await supabase.from("portal_users").insert({
+      wallet_address: walletAddress,
+      last_login: new Date().toISOString(),
+      login_count: 1,
+    });
+  }
+}
 
 const NEX_TOKEN_ADDRESS = "0x58412ae274f2764b71c66315d97662d47d930d94";
 const SUPABASE_URL = "https://vjfqhznevlffgkbasgks.supabase.co";
