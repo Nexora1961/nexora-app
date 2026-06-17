@@ -705,7 +705,15 @@ const isMobile = window.innerWidth < 768;
   Total Logins:{" "}
   {portalUsers.reduce((sum, u) => sum + (u.login_count || 0), 0)}
 </p>
-
+<p>
+  New Today: {
+    portalUsers.filter(
+      u =>
+        new Date(u.created_at).toDateString() ===
+        new Date().toDateString()
+    ).length
+  }
+</p>
   <div style={{ overflowX: "auto", marginTop: "16px" }}>
     <table style={{ width: "100%", color: "white" }}>
       <thead>
