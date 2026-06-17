@@ -187,11 +187,22 @@ useEffect(() => {
   const [balanceNumber, setBalanceNumber] = useState(0);
   const [xUsername, setXUsername] = useState("");
 const [telegramUsername, setTelegramUsername] = useState("");
+   const [portalUsers, setPortalUsers] = useState([]);
 const [discordUsername, setDiscordUsername] = useState("");
 const [languages, setLanguages] = useState("");
 const [experience, setExperience] = useState("");
 const [reason, setReason] = useState("");
 const [showAmbassadorForm, setShowAmbassadorForm] = useState(false);
+  async function loadPortalUsers() {
+  const { data, error } = await supabase
+    .from("portal_users")
+    .select("*")
+    .order("last_login", { ascending: false });
+
+  if (!error && data) {
+    setPortalUsers(data);
+  }
+}
   useEffect(() => {
   async function trackWalletLogin() {
     const walletAddress = user?.wallet?.address;
@@ -681,7 +692,36 @@ const isMobile = window.innerWidth < 768;
   </button>
 </Card>
             </section>
+<Card border="#22c55e">
+  <h2>📊 Portal Users</h2>
 
+  <p>Total Users: {portalUsers.length}</p>
+
+  <div style={{ overflowX: "auto", marginTop: "16px" }}>
+    <table style={{ width: "100%", color: "white" }}>
+      <thead>
+        <tr>
+          <th align="left">Wallet</th>
+          <th align="left">Last Login</th>
+          <th align="left">Logins</th>
+        </tr>
+      </thead>
+      <tbody>
+        {portalUsers.map((u) => (
+          <tr key={u.id}>
+            <td>{shortWallet(u.wallet_address)}</td>
+            <td>
+              {u.last_login
+                ? new Date(u.last_login).toLocaleString()
+                : "-"}
+            </td>
+            <td>{u.login_count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Card>
             <Card>
               <h2>Advanced Nexora Role System</h2>
               <section
